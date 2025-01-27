@@ -53,4 +53,4 @@ A tabela de usuários não está explicitamente definida neste README, mas assum
 ### Passos
 1. Clone este repositório:
    ```bash
-   git clone <URL_do_repositório_forked>
+   git clone <https://github.com/WebDev5231/coding-test-blog.git>

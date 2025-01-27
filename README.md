@@ -1,53 +1,56 @@
-# Coding Test Dotkon | Projeto de Blog Simples
+# Blog Simples
 
 ## Descrição
+Este é um projeto de um **blog simples**, onde usuários podem **visualizar, criar, editar e excluir postagens**. O projeto foi desenvolvido utilizando **.NET** e **Entity Framework Core** para a parte de backend, com uma interface web responsiva utilizando **Bootstrap 5.2.3**.
 
-Agradecemos por estar participando do nosso processo seletivo! Estamos muito felizes em ter você por aqui 😃.
-A primeira etapa do processo seletivo é um teste técnico, que está descrito abaixo. Boa sorte! \o/
+A aplicação possui autenticação de usuário, permitindo que usuários registrados possam gerenciar suas postagens. Apenas usuários autenticados podem criar, editar ou excluir postagens. Visitantes do site podem visualizar todas as postagens, mas não podem editá-las ou excluí-las.
 
-Este projeto consiste na implementação de um sistema básico de blog onde os usuários podem visualizar, criar, editar e excluir postagens. O objetivo é avaliar as habilidades técnicas em C# e o uso do Entity Framework para manipulação de dados.
+## Tecnologias Usadas
+- **.NET 7+**: Framework para o desenvolvimento da aplicação.
+- **Entity Framework Core**: ORM utilizado para comunicação com o banco de dados.
+- **SQL Server**: Banco de dados utilizado para armazenar informações sobre os posts e usuários.
+- **Bootstrap 5.2.3**: Framework CSS para a criação de uma interface web moderna e responsiva.
+- **JavaScript (jQuery)**: Usado para algumas interações dinâmicas na interface.
 
-## Requisitos para a entrega
-    1. Faça um fork deste repositório;
-    2. Realize o teste;
-    3. Adicione seu currículo em PDF na raiz do repositório;
-    4. Envie-nos o PULL-REQUEST para que seja avaliado.
-    
-    OBS: seus dados não ficarão públicos em nosso repositório.
-  
 ## Funcionalidades
 
-### Requisitos Funcionais
+- **Autenticação de Usuários**:
+  - Usuários podem **se registrar** e **fazer login**.
+  - Após o login, o usuário pode acessar e gerenciar suas postagens.
+  
+- **Gerenciamento de Postagens**:
+  - Usuários autenticados podem **criar**, **editar** e **excluir** suas próprias postagens.
+  - O sistema oferece uma interface simples para adicionar um título e conteúdo à postagem.
+  - As postagens são armazenadas no banco de dados com a data de criação e o autor (usuário logado).
 
-1. **Autenticação**: 
-    - Usuários devem ser capazes de se registrar e fazer login.
+- **Visualização de Postagens**:
+  - Qualquer visitante pode **visualizar as postagens** existentes.
+  - As postagens são exibidas com título, conteúdo inicial (primeiros 100 caracteres) e data de criação.
+  
+- **Interface Web Simples**:
+  - A interface foi projetada para ser simples e fácil de usar.
+  - Os posts recentes são exibidos na página principal.
+  - Há um modal para adicionar novas postagens, acessível através de um botão fixo na tela.
 
-2. **Gerenciamento de Postagens**: 
-    - Usuários autenticados podem criar postagens, editar suas próprias postagens e excluir postagens existentes.
+## Estrutura do Banco de Dados
 
-3. **Visualização de Postagens**: 
-    - Qualquer visitante do site pode visualizar as postagens existentes.
+O sistema utiliza um banco de dados **SQL Server** para armazenar as informações sobre os posts e usuários. A tabela `Posts` contém os seguintes campos:
 
-### Requisitos Técnicos
+- **Id** (int): Identificador único do post (auto-incremento).
+- **Title** (nvarchar(255)): Título do post.
+- **Content** (text): Conteúdo do post.
+- **CreatedAt** (datetime): Data de criação do post.
+- **AuthorId** (int): ID do autor, que é um relacionamento com a tabela de usuários.
 
-- **.NET**: Utilize a versão 7, 8 ou 9
-- **Entity Framework**: Utilize o Entity Framework para interagir com o banco de dados e armazenar informações sobre usuários e postagens.
+A tabela de usuários não está explicitamente definida neste README, mas assume-se que os usuários são gerenciados com o sistema de autenticação integrado ao .NET.
 
-### Requisitos Opcionais
+## Como Rodar o Projeto
 
-- **Arquitetura Monolítica**: Organize as responsabilidades do sistema, como autenticação, gerenciamento de postagens e notificações em tempo real.
+### Pré-Requisitos
+- **.NET SDK 7+** instalado na sua máquina.
+- **SQL Server** ou **SQL Server Express** para o banco de dados.
 
-- **Princípios SOLID**: Aplique os princípios SOLID, com ênfase no Princípio da Responsabilidade Única (SRP) e no Princípio da Inversão de Dependência (DIP).
-
-- **WebSockets**: Implemente WebSockets para notificações em tempo real, como uma notificação simples na interface do usuário sempre que uma nova postagem for feita.
-
-- **Interface Web Simples**: Crie uma interface web simples para a interação com o sistema.
-
-## Observações Finais
-Certifique-se de que seu código está bem documentado e limpo.
-Inclua qualquer documentação adicional que possa ajudar a entender sua solução (README.md).
-
----
-
-Este teste prático é uma oportunidade para demonstrar suas habilidades em desenvolvimento C#, arquitetura de software e boas práticas de programação. 
-Divirta-se no processo!
+### Passos
+1. Clone este repositório:
+   ```bash
+   git clone <URL_do_repositório_forked>

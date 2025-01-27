@@ -1,0 +1,205 @@
+﻿@model IEnumerable<Projeto_de_Blog_Simples.Models.Post>
+
+@{
+    ViewBag.Title = "Página Principal - Blog Simples";
+    var userId = Session["UserId"];
+    var userName = Session["Username"];
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <style>
+        body {
+            background-color: #f4f7fc;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .post-list {
+            margin-top: 30px;
+        }
+
+            .post-list li {
+                font-size: 1.2em;
+                border-bottom: 1px solid #ddd;
+                padding: 10px;
+            }
+
+        .btn-logout {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+            .btn-logout:hover {
+                background-color: #c9302c;
+            }
+
+        .card {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .post-description {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .post-content {
+            font-size: 1em;
+            color: #444;
+        }
+
+        /* Botão para adicionar post */
+        .btn-add-post {
+            background-color: #5bc0de;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            text-decoration: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+            .btn-add-post:hover {
+                background-color: #31b0d5;
+            }
+
+        /* Modal */
+        .modal-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Exibindo mensagens de sucesso ou erro -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (userId != null && userName != null)
+        {
+            <div class="alert alert-success">
+                Olá, <b>@userName!</b> Você está logado.
+            </div>
+
+            <br />
+            <h3 style="text-align:center;"><b>Posts Recentes</b></h3>
+            <div class="post-list">
+                <ul class="list-group">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var post in Model)
+                        {
+                            <li class="list-group-item">
+                                <div class="card">
+                                    <p class="post-title">@post.Title</p>
+                                    <p class="post-description">@post.Content.Substring(0, Math.Min(100, post.Content.Length))...</p>
+                                    <p class="post-date">@post.CreatedAt.ToString("dd/MM/yyyy")</p>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <p>Nenhum post encontrado.</p>
+                    }
+                </ul>
+            </div>
+
+            <!-- Botão para adicionar post -->
+            <button class="btn-add-post" data-bs-toggle="modal" data-bs-target="#addPostModal">Adicionar Post</button>
+
+            <!-- Link para logout -->
+            <div class="my-4 text-center">
+                <a href="@Url.Action("Login", "Login")" class="btn-logout">Sair</a>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                Você não está logado. <a href="@Url.Action("Login", "Login")">Clique aqui</a> para fazer login.
+            </div>
+        }
+    </div>
+
+    <!-- Modal para adicionar post -->
+    <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPostModalLabel">Adicionar Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddPost", "Login", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken() <!-- Proteção contra CSRF -->
+                        <div class="form-group">
+                            <label for="Title">Título:</label>
+                            <input type="text" class="form-control" id="Title" name="Title" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Content">Conteúdo:</label>
+                            <textarea class="form-control" id="Content" name="Content" required></textarea>
+                        </div>
+                        <input type="hidden" name="AuthorId" value="@userId" />
+                        <button type="submit" class="btn btn-primary mt-3">Salvar Post</button>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
